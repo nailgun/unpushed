@@ -1,12 +1,14 @@
 from setuptools import setup, find_packages
 
+def _here(*args):
+    import os
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
+
 setup(
     name = 'unpushed',
     version = '1.0',
     description = u'Scan version control for uncommitted and unpushed changes',
-    long_description = u'Originally Created by Brandon Craig Rhodes\n'
-        u'Forked version with support of unpushed '
-        u'branches and notification.',
+    long_description = open(_here('README.rst'), 'r').read(),
     author = 'Dmitry Bashkatov',
     author_email = 'dbashkatov@gmail.com',
     url = 'http://github.com/nailgun/unpushed/',
