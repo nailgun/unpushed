@@ -20,6 +20,7 @@ setup(
     ],
     package_dir = {'': 'src'},
     packages = find_packages('src'),
+    package_data = {'': ['*.png']},
     include_package_data = True,
     install_requires = [],
     entry_points = '[console_scripts]\n'
