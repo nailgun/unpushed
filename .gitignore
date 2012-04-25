@@ -1,2 +1,5 @@
 .*.swp
 *.py[co]
+/build
+/dist
+/src/uncommitted2.egg-info
