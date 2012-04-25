@@ -9,8 +9,8 @@ from . import scanner
 
 USAGE = '''usage: %prog [options] path [path...]
 
-  Checks the status of all Subversion and Mercurial repositories beneath the
-  paths given on the command line.  Any repositories with uncommitted changes
+  Checks the status of all Version Control repositories beneath the paths
+  given on the command line.  Any repositories with uncommitted changes
   are printed to standard out, along with the status of the files inside.'''
 
 def main():
