@@ -1,18 +1,9 @@
-This project was originally created by Brandon Rhodes for SVN & Mercurial. ( http://bitbucket.org/brandon/uncommitted/src )
-
-I only added Git support which was trivial and changed it to default to using the "walk" method of traversing through the tree structure rather than the "locate" method which didn't work too well on my Mac.
-I was looking for a way to figure out which files needed committing on StackOverflow ( http://stackoverflow.com/questions/2765253/git-status-across-multiple-repositories-on-a-mac ) and was directed to this project by Ryan Wilcox. (Thanks Ryan!)
-
-INSTALLATION TIP:
-Open Terminal and type 'sudo easy_install uncommitted' from above the directory level (i.e. directory is named uncommitted).
-Then you can call the file with 'uncommitted ~/Sites'
-
-
-Below is the text from Brandon Rhodes about his vision for 'uncommitted' (with changes to indicate the addition of git).
-
 
 ``uncommitted`` -- Scan Version Control For Uncommitted Changes
 ===============================================================
+
+This project was originally created by Brandon Rhodes for SVN &
+Mercurial. (http://bitbucket.org/brandon/uncommitted).
 
 When working on one version-controlled project on my hard drive, I often
 flip over quickly to another project to make a quick change.  By the end
@@ -46,9 +37,9 @@ example, you would type this::
     $ uncommitted -w ~/devel
 
 Not only will the output of "-w" always be up-to-date, but it is usually
-faster for small directory trees.  The default behavior (which can also
-be explicitly requested, with "-l") is faster when the directory tree
-you are searching is very large.
+faster for small directory trees.  The default behavior of using
+*locate(1)* (which can also be explicitly requested, with "-l") is
+faster when the directory tree you are searching is very large.
 
 Should you ever want a list of all repositories, and not just those with
 uncommitted changes, you can use the "-v" verbose option::
@@ -67,19 +58,10 @@ At the moment, "uncommitted" supports:
 * `Git`_ (.git directories)
 * `Subversion`_ (.svn directories)
 
-It needs to support `Git`_ soon, since that DVCS is in widespread use.
-However, I am not familiar enough with Git's output to write a function
-for it myself.  When I tried out Git a few minutes ago, its status
-messages were crazy, with all sorts of hash characters everywhere; it
-looked like it was suffering from an acute lack of confidence, and was
-therefore commenting out all of its own output.  Anyway, there is
-probably some simple way to make Git report on uncommitted changes, but
-I will leave it to a Git fan to figure out how, if they would like to
-contribute a patch back.
-
-I would also not be opposed to someone contributing a Bazaar plugin.
-But CVS should probably never be supported by "uncommitted" because that
-might imply that it is still an acceptible system to be using.
+I am not opposed to someone contributing code to support Bazaar, or
+other more obscure version control systems.  But we should probably keep
+"uncommitted" from ever supporting CVS, because that might imply that it
+is still an acceptible system to be using.
 
 It occurs to me that there might already be some version control
 abstraction layer that I should be using for this, rather than figuring
@@ -90,11 +72,13 @@ that can be a useful direction for the next phase of development!
 Changelog
 ---------
 
-**1.2** (2010 May 08)
+**1.3** (2010 May 10)
 
-- *Feature:* Eapen added Git support - http://eapen.in 
-- *Bug:* Changed a line in the code from "st" to "status" as pointed out by Shaun (shaunsephton) [I had an alias for 'st' before]
+- *Bugfix*: the Git command is "status" not "st".
 
+**1.2** (2010 May 9)
+
+- `Eapen`_ contributed code to support Git.
 
 **1.1** (2010 April 24)
 
@@ -107,3 +91,5 @@ Changelog
 .. _Subversion: http://subversion.tigris.org/
 .. _Git: http://git-scm.com/
 .. _pyvcs: http://github.com/alex/pyvcs/blob/master/README.txt
+.. _Eapen: http://eapen.in
+

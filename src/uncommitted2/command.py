@@ -1,4 +1,4 @@
-"""The 'uncommitted' command-line tool itself."""
+"""The 'uncommitted2' command-line tool itself."""
 
 import os
 import re
@@ -54,12 +54,12 @@ def status_mercurial(path, ignore_set):
     return lines
 
 def status_git(path, ignore_set):
-    """Return text lines describing the status of a Mercurial repository."""
+    """Return text lines describing the status of a Git repository."""
     process = Popen(('git', 'status', '-s'), stdout=PIPE, cwd=path)
     st = process.stdout.read()
     lines = [ l for l in st.splitlines() if not l.startswith('#') ]
     return lines
-	
+
 def status_subversion(path, ignore_set):
     """Return text lines describing the status of a Subversion repository."""
     if path in ignore_set:
@@ -79,10 +79,12 @@ def status_subversion(path, ignore_set):
             keepers.append(status + filename)
     return keepers
 
-DOTDIRS = {'.hg': 'Mercurial', '.svn': 'Subversion', '.git': 'Git'}
-STATUS_FUNCTIONS = {'Mercurial': status_mercurial,
-                    'Subversion': status_subversion,
-					'Git': status_git}
+DOTDIRS = {'.hg': 'Mercurial', '.git': 'Git', '.svn': 'Subversion'}
+STATUS_FUNCTIONS = {
+    'Mercurial': status_mercurial,
+    'Git': status_git,
+    'Subversion': status_subversion,
+}
 
 def scan(repos, verbose):
     """Given a repository list [(path, vcsname), ...], scan each of them."""
@@ -116,11 +118,11 @@ def main():
         sys.stderr.write('Error: you cannot specify both "-l" and "-w"\n')
         exit(2)
 
-    if options.use_locate:
-        find_repos = find_repositories_with_locate
-    else:
+    if options.use_walk:
         find_repos = find_repositories_by_walking
-		
+    else:
+        find_repos = find_repositories_with_locate
+
     repos = set()
 
     for path in args:
@@ -132,3 +134,6 @@ def main():
 
     repos = sorted(repos)
     scan(repos, options.verbose)
+
+if __name__ == '__main__':
+    main()
