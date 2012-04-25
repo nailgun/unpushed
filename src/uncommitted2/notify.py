@@ -1,4 +1,4 @@
-"""The 'uncommitted2' command-line tool itself."""
+"""The 'uncommitted2-notify' command-line tool."""
 
 import os
 import sys
@@ -9,17 +9,22 @@ from . import scanner
 USAGE = '''usage: %prog [options] path [path...]
 
   Checks the status of all Version Control repositories beneath the paths
-  given on the command line.  Any repositories with uncommitted changes
-  are printed to standard out, along with the status of the files inside.'''
+  given on the command line.  Notify on OSD if some of them has changes.'''
+
+def here(*args):
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
+
+def notify_linux(report):
+    import pynotify
+    pynotify.init('uncommitted2-notify')
+    icon = 'file://'+here('logo.png')
+    n = pynotify.Notification('You have changes in working directory', report, icon)
+    n.show()
 
 def main():
     parser = OptionParser(usage=USAGE)
     parser.add_option('-l', '--locate', dest='use_locate', action='store_true',
                       help='use locate(1) to find repositories')
-    parser.add_option('-v', '--verbose', action='store_true',
-                      help='show repository status')
-    parser.add_option('-a', '--all', action='store_true', dest='print_all',
-                      help='print every repository whether changed or not')
     parser.add_option('-w', '--walk', dest='use_walk', action='store_true',
                       help='manually walk file tree to find repositories')
     (options, args) = parser.parse_args()
@@ -47,14 +52,15 @@ def main():
         repos.update(find_repos(path))
 
     repos = sorted(repos)
+    report = ''
     for status in scanner.scan_repos(repos):
-        if status['touched'] or options.print_all:
-            status_char = '* ' if status['touched'] else '  '
-            sys.stdout.write(status_char)
-            print status['path'], status['status'], '('+status['vcs']+')'
-            if options.verbose:
-                sys.stdout.write(status['output'])
-                sys.stdout.write('\n')
+        if status['touched']:
+            report += '%s %s (%s)\n' % (status['path'], status['status'], status['vcs'])
+    if report:
+        if sys.platform.startswith('linux'):
+            notify_linux(report)
+        else:
+            raise NotImplementedError('Notification is not implemented for this system')
 
 if __name__ == '__main__':
     main()

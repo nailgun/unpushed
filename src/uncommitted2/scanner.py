@@ -1,6 +1,6 @@
 import os
-import sys
 import re
+from subprocess import Popen, PIPE
 
 from . import repos
 
@@ -51,7 +51,7 @@ STATUS_FUNCTIONS = {
     'Subversion': repos.subversion,
 }
 
-def scan(repos, print_all, verbose):
+def scan_repos(repos):
     """Given a repository list [(path, vcsname), ...], scan each of them."""
     ignore_set = set()
     for path, vcsname in repos:
@@ -59,10 +59,5 @@ def scan(repos, print_all, verbose):
             continue
         get_statuses = STATUS_FUNCTIONS[vcsname]
         for status in get_statuses(path, ignore_set):
-            if status['touched'] or print_all:
-                status_char = '* ' if status['touched'] else '  '
-                sys.stdout.write(status_char)
-                print status['path'], status['status'], '('+vcsname+')'
-                if verbose:
-                    sys.stdout.write(status['output'])
-                    sys.stdout.write('\n')
+            status['vcs'] = vcsname
+            yield status
