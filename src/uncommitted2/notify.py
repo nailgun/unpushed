@@ -15,11 +15,33 @@ def here(*args):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
 
 def notify_linux(report):
+    import os
+    import re
+    import getpass
+    from subprocess import Popen, PIPE
     import pynotify
-    pynotify.init('uncommitted2-notify')
-    icon = 'file://'+here('logo.png')
-    n = pynotify.Notification('You have changes in working directory', report, icon)
-    n.show()
+    w = Popen(('w', getpass.getuser()), stdout=PIPE).stdout.read().splitlines()[2:]
+    displays = set()
+    for entry in w:
+        display = entry.split(None, 8)[2]
+        displays.add(display)
+    print displays
+    filtered = set()
+    for display in displays:
+        m = re.match(r'^(:\d+)\.\d+$', display)
+        if m:
+            root_display = m.group(1)
+            if root_display not in displays:
+                filtered.add(display)
+        else:
+            filtered.add(display)
+    print filtered
+    for display in filtered:
+        os.environ['DISPLAY'] = display
+        pynotify.init('uncommitted2-notify')
+        icon = 'file://'+here('logo.png')
+        n = pynotify.Notification('You have changes in working directory', report, icon)
+        n.show()
 
 def main():
     parser = OptionParser(usage=USAGE)
