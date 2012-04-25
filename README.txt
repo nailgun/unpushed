@@ -9,6 +9,9 @@ This is fork of "uncommitted" project originally created by Brandon Rhodes
 * support for checking branches for unpushed commits
 * on-screen notification
 
+Preface from original author
+----------------------------
+
 When working on one version-controlled project on my hard drive, I often
 flip over quickly to another project to make a quick change.  By the end
 of the day I have forgotten about that other change and often find it
@@ -16,7 +19,7 @@ months later when I enter that repository again.  I needed a way to be
 alerted at the end of each day about any uncommitted changes sitting
 around on my system.
 
-Thus was born this "unpushed" script: using either your system
+Thus was born this "uncommitted" script: using either your system
 *locate(1)* command or by walking a filesystem tree on its own, it will
 find version controlled directories and print a report on the standard
 output about any uncommitted changes still sitting on your drive.  By
@@ -46,32 +49,47 @@ faster for small directory trees.  The default behavior of using
 faster when the directory tree you are searching is very large.
 
 Should you ever want a list of all repositories, and not just those with
-uncommitted changes, you can use the "-v" verbose option::
+uncommitted changes, you can use the "-a" option::
+
+    $ unpushed -a ~
+
+Also you can list exact files or braches was changed using the "-v" verbose
+option::
 
     $ unpushed -v ~
 
 You can always get help by running "unpushed" without arguments or
 with the "-h" or "--help" options.
 
+On-Screen notification
+----------------------
+
+    $ unpushed-notify ~
+
+will show on-screen notification about uncommitted and unpushed changes. On
+Linux this is done through pynotify library. On other systems this feature is
+not implemented yet.
+
+You can add this line to your crontab (*crontab -e*)::
+
+    */10 18-20 * * *   unpushed-notify ~
+
+This will show you notification about uncommitted and unpushed changes every
+10 minutes starting from 6pm ending at 8pm.
+
+Do not forget to add unpushed-notify to cron PATH!
+
 Supported VCs
 -------------
 
-At the moment, "unpushed" supports:
+At the moment, "unpushed" supports::
 
 * `Mercurial`_ (.hg directories)
 * `Git`_ (.git directories)
 * `Subversion`_ (.svn directories)
 
-I am not opposed to someone contributing code to support Bazaar, or
-other more obscure version control systems.  But we should probably keep
-"unpushed" from ever supporting CVS, because that might imply that it
-is still an acceptible system to be using.
-
-It occurs to me that there might already be some version control
-abstraction layer that I should be using for this, rather than figuring
-out how to run each version control system myself; a quick search of
-PyPI suggests that I take a closer look at the `pyvcs`_ project.  Maybe
-that can be a useful direction for the next phase of development!
+There is only branch support for Git. I don't know how to do it in Mercurial
+because I don't use it.
 
 .. _Mercurial: http://mercurial.selenic.com/
 .. _Subversion: http://subversion.tigris.org/
