@@ -23,4 +23,5 @@ setup(
     install_requires = [],
     entry_points = '[console_scripts]\n'
         'uncommitted2 = uncommitted2.command:main\n',
+        'uncommitted2-notify = uncommitted2.notify:main\n',
 )
