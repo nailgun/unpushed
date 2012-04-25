@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'uncommitted2',
-    version = '1.2',
+    version = '0.2',
     description = u'Scan Version Control For Uncommitted Changes',
     long_description = u'Originally Created by Brandon Craig Rhodes\n'
         u'Forked version with Git support by George Eapen\n'
@@ -11,7 +11,7 @@ setup(
     author_email = 'dbashkatov@gmail.com',
     url = 'http://github.com/nailgun/uncommitted2/',
     classifiers = [
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre-Alpha',
         'Environment :: Console', 'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Topic :: Software Development :: Version Control',
