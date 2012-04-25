@@ -1,5 +1,5 @@
 
-``uncommitted`` -- Scan Version Control For Uncommitted Changes
+``uncommitted2`` -- Scan Version Control For Uncommitted Changes
 ===============================================================
 
 This project was originally created by Brandon Rhodes for SVN &
