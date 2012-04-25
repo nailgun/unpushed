@@ -21,5 +21,6 @@ setup(
     packages = find_packages('src'),
     include_package_data = True,
     install_requires = [],
-    entry_points = '[console_scripts]\nuncommitted2 = uncommitted2.command:main\n',
+    entry_points = '[console_scripts]\n'
+        'uncommitted2 = uncommitted2.command:main\n',
 )
