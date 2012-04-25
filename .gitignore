@@ -2,4 +2,4 @@
 *.py[co]
 /build
 /dist
-/src/uncommitted2.egg-info
+/src/unpushed.egg-info

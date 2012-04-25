@@ -1,4 +1,4 @@
-"""The 'uncommitted2' command-line tool itself."""
+"""The 'unpushed' command-line tool itself."""
 
 import os
 import sys

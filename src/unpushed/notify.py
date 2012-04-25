@@ -1,4 +1,4 @@
-"""The 'uncommitted2-notify' command-line tool."""
+"""The 'unpushed-notify' command-line tool."""
 
 import os
 import sys
@@ -38,7 +38,7 @@ def notify_linux(report):
     print filtered
     for display in filtered:
         os.environ['DISPLAY'] = display
-        pynotify.init('uncommitted2-notify')
+        pynotify.init('unpushed-notify')
         icon = 'file://'+here('logo.png')
         n = pynotify.Notification('You have changes in working directory', report, icon)
         n.show()

@@ -1,16 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'uncommitted2',
+    name = 'unpushed',
     version = '1.0',
-    description = u'Scan Version Control For Uncommitted Changes',
+    description = u'Scan version control for uncommitted and unpushed changes',
     long_description = u'Originally Created by Brandon Craig Rhodes\n'
-        u'Forked version with Git support by George Eapen\n'
-        u'Version 2 fork by Dmitry Bashkatov with support of unpushed '
+        u'Forked version with support of unpushed '
         u'branches and notification.',
     author = 'Dmitry Bashkatov',
     author_email = 'dbashkatov@gmail.com',
-    url = 'http://github.com/nailgun/uncommitted2/',
+    url = 'http://github.com/nailgun/unpushed/',
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console', 'Intended Audience :: Developers',
@@ -24,6 +23,6 @@ setup(
     include_package_data = True,
     install_requires = [],
     entry_points = '[console_scripts]\n'
-        'uncommitted2 = uncommitted2.command:main\n'
-        'uncommitted2-notify = uncommitted2.notify:main\n',
+        'unpushed = unpushed.command:main\n'
+        'unpushed-notify = unpushed.notify:main\n',
 )
