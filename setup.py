@@ -6,7 +6,7 @@ def _here(*args):
 
 setup(
     name = 'unpushed',
-    version = '1.0',
+    version = '1.0.1',
     description = u'Scan version control for uncommitted and unpushed changes',
     long_description = open(_here('README.rst'), 'r').read(),
     author = 'Dmitry Bashkatov',
