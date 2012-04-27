@@ -1,14 +1,14 @@
+import os
 from setuptools import setup, find_packages
 
-def _here(*args):
-    import os
-    return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
+def read(fname):
+    return open(os.path.join(os.path.abspath(os.path.dirname(__file__)), fname)).read()
 
 setup(
     name = 'unpushed',
-    version = '1.0.1',
+    version = '1.0.2',
     description = u'Scan version control for uncommitted and unpushed changes',
-    long_description = open(_here('README.rst'), 'r').read(),
+    long_description = read('README.rst'),
     author = 'Dmitry Bashkatov',
     author_email = 'dbashkatov@gmail.com',
     url = 'http://github.com/nailgun/unpushed/',
