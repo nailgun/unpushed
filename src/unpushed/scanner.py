@@ -51,13 +51,13 @@ STATUS_FUNCTIONS = {
     'Subversion': repos.subversion,
 }
 
-def scan_repos(repos):
+def scan_repos(repos, **options):
     """Given a repository list [(path, vcsname), ...], scan each of them."""
     ignore_set = set()
     for path, vcsname in repos:
         if path in ignore_set:
             continue
         get_statuses = STATUS_FUNCTIONS[vcsname]
-        for status in get_statuses(path, ignore_set):
+        for status in get_statuses(path, ignore_set, **options):
             status['vcs'] = vcsname
             yield status

@@ -47,6 +47,8 @@ def main():
                       help='use locate(1) to find repositories')
     parser.add_option('-w', '--walk', dest='use_walk', action='store_true',
                       help='manually walk file tree to find repositories')
+    parser.add_option('-t', '--tracked', dest='ignore_untracked', action='store_true',
+                      help='ignore untracked files in repositories')
     (options, args) = parser.parse_args()
 
     if not args:
@@ -73,7 +75,7 @@ def main():
 
     repos = sorted(repos)
     report = ''
-    for status in scanner.scan_repos(repos):
+    for status in scanner.scan_repos(repos, ignore_untracked=options.ignore_untracked):
         if status['touched']:
             report += '%s %s (%s)\n' % (status['path'], status['status'], status['vcs'])
     if report:

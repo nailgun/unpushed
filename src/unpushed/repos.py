@@ -1,27 +1,62 @@
 import os
 from subprocess import Popen, PIPE
 
-def mercurial(path, ignore_set):
+def ilen(it):
+    return sum(1 for i in it)
+
+def mercurial(path, ignore_set, **options):
     """Get statuses of a Mercurial repository."""
+    ignore_untracked = options['ignore_untracked']
+
     process = Popen(('hg', 'st'), stdout=PIPE, cwd=path)
     output = process.stdout.read()
-    touched = bool(output)
+    lines = output.splitlines()
+    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_only = untracked_count == len(lines)
+
+    touched = bool(lines)
+    if ignore_untracked and untracked_only:
+        touched = False
+    if touched:
+        if untracked_only:
+            status = 'untracked'
+        else:
+            status = 'uncommitted'
+    else:
+        status = 'OK'
+
     yield dict(
         touched=touched,
         path=path,
-        status='uncommitted' if touched else 'OK',
+        status=status,
         output=output,
     )
 
-def git(path, ignore_set):
+def git(path, ignore_set, **options):
     """Get statuses of a Git repository."""
+    ignore_untracked = options['ignore_untracked']
+
     process = Popen(('git', 'status', '--porcelain'), stdout=PIPE, cwd=path)
     output = process.stdout.read()
-    touched = bool(output)
+    lines = output.splitlines()
+    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_only = untracked_count == len(lines)
+
+    touched = bool(lines)
+    if ignore_untracked and untracked_only:
+        touched = False
+    if touched:
+        if untracked_only:
+            status = 'untracked'
+        else:
+            status = 'uncommitted'
+    else:
+        status = 'OK'
+
     yield dict(
         touched=touched,
         path=path,
-        status='uncommitted' if touched else 'OK',
+        status=status,
         output=output,
     )
 
@@ -44,8 +79,10 @@ def git(path, ignore_set):
             output=output,
         )
 
-def subversion(path, ignore_set):
+def subversion(path, ignore_set, **options):
     """Get statuses of a Subversion repository."""
+    ignore_untracked = options['ignore_untracked']
+
     process = Popen(('svn', 'st', '-v'), stdout=PIPE, cwd=path)
     output = process.stdout.read()
     lines = []
@@ -59,10 +96,25 @@ def subversion(path, ignore_set):
         ignore_set.add(os.path.join(path, filename))
         if status.strip():
             lines.append(status + filename)
+    output='\n'.join(lines)+'\n'
+
+    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_only = untracked_count == len(lines)
+
     touched = bool(lines)
+    if ignore_untracked and untracked_only:
+        touched = False
+    if touched:
+        if untracked_only:
+            status = 'untracked'
+        else:
+            status = 'uncommitted'
+    else:
+        status = 'OK'
+
     yield dict(
         touched=touched,
         path=path,
-        status='uncommitted' if touched else 'OK',
-        output='\n'.join(lines)+'\n',
+        status=status,
+        output=output,
     )

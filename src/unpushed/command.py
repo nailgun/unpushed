@@ -17,11 +17,13 @@ def main():
     parser.add_option('-l', '--locate', dest='use_locate', action='store_true',
                       help='use locate(1) to find repositories')
     parser.add_option('-v', '--verbose', action='store_true',
-                      help='show repository status')
+                      help='for each repository print it\'s status')
     parser.add_option('-a', '--all', action='store_true', dest='print_all',
                       help='print every repository whether changed or not')
     parser.add_option('-w', '--walk', dest='use_walk', action='store_true',
                       help='manually walk file tree to find repositories')
+    parser.add_option('-t', '--tracked', dest='ignore_untracked', action='store_true',
+                      help='ignore untracked files in repositories')
     (options, args) = parser.parse_args()
 
     if not args:
@@ -47,12 +49,12 @@ def main():
         repos.update(find_repos(path))
 
     repos = sorted(repos)
-    for status in scanner.scan_repos(repos):
+    for status in scanner.scan_repos(repos, ignore_untracked=options.ignore_untracked):
         if status['touched'] or options.print_all:
             status_char = '*' if status['touched'] else ' '
-            print(status_char, status['path'], status['status'], '('+status['vcs']+')')
+            print status_char, status['path'], status['status'], '('+status['vcs']+')'
             if options.verbose:
-                print(status['output'])
+                print status['output']
 
 if __name__ == '__main__':
     main()
