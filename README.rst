@@ -1,16 +1,19 @@
+============
+``unpushed``
+============
+---------------------------------------------------------
+Scan version control for uncommitted and unpushed changes
+---------------------------------------------------------
 
-``unpushed`` -- Scan version control for uncommitted and unpushed changes
-=========================================================================
-
-This is fork of "uncommitted" project originally created by Brandon Rhodes
-(http://bitbucket.org/brandon/uncommitted).
+This is fork of "uncommitted_" project originally created by Brandon Rhodes.
 
 "unpushed" adds some features:
-* support for checking branches for unpushed commits
-* on-screen notification
+
+* support for checking branches for unpushed commits,
+* desktop notification.
 
 Preface from original author
-----------------------------
+============================
 
 When working on one version-controlled project on my hard drive, I often
 flip over quickly to another project to make a quick change.  By the end
@@ -26,7 +29,7 @@ output about any uncommitted changes still sitting on your drive.  By
 running it from a *cron(8)* job you can make this notification routine.
 
 Running "unpushed"
-------------------
+==================
 
 By default "unpushed" uses the *locate(1)* command to scan for
 repositories, which means that it can operate quickly even over very
@@ -61,13 +64,15 @@ option::
 You can always get help by running "unpushed" without arguments or
 with the "-h" or "--help" options.
 
-On-Screen notification
-----------------------
+Desktop notification
+====================
+
+Application use system depended desktop notification facility. To show desktop
+notification run this command::
 
     $ unpushed-notify ~
 
-will show on-screen notification about uncommitted and unpushed changes. On
-Linux this is done through pynotify library. On other systems this feature is
+On Linux this is done through pynotify library. On other systems this feature is
 not implemented yet.
 
 You can add this line to your crontab (*crontab -e*)::
@@ -80,9 +85,9 @@ This will show you notification about uncommitted and unpushed changes every
 Do not forget to add unpushed-notify to cron PATH!
 
 Supported VCs
--------------
+=============
 
-At the moment, "unpushed" supports::
+At the moment, "unpushed" supports:
 
 * `Mercurial`_ (.hg directories)
 * `Git`_ (.git directories)
@@ -91,6 +96,21 @@ At the moment, "unpushed" supports::
 There is only branch support for Git. I don't know how to do it in Mercurial
 because I don't use it.
 
+Limitations
+===========
+
+* Only Linux libnotify is supported as notification facility
+* "unpushed" don't show not pushed changesets in Mercurial (only in Git)
+* untracked files are shown as uncommited file, there is no option to change this
+
+Changelog
+=========
+
+**1.0.2** (2012 April 27)
+
+- Fix setup script
+
+.. _uncommitted: http://bitbucket.org/brandon/uncommitted
 .. _Mercurial: http://mercurial.selenic.com/
 .. _Subversion: http://subversion.tigris.org/
 .. _Git: http://git-scm.com/
