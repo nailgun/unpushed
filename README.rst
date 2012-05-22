@@ -93,9 +93,6 @@ At the moment, "unpushed" supports:
 * `Git`_ (.git directories)
 * `Subversion`_ (.svn directories)
 
-There is only branch support for Git. I don't know how to do it in Mercurial
-because I don't use it.
-
 Limitations
 ===========
 
@@ -103,6 +100,14 @@ Limitations
 
 Changelog
 =========
+
+**1.1.0** (2012 May 22)
+
+- Fix README markup
+- Report untracked files separately
+- Add -t option to ignore untracked files
+- Show not pushed changesets in Mercurial. Thanks Guilherme Gondim for
+  testing
 
 **1.0.2** (2012 April 27)
 
