@@ -100,8 +100,6 @@ Limitations
 ===========
 
 * Only Linux libnotify is supported as notification facility
-* "unpushed" don't show not pushed changesets in Mercurial (only in Git)
-* untracked files are shown as uncommited file, there is no option to change this
 
 Changelog
 =========

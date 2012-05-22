@@ -32,6 +32,30 @@ def mercurial(path, ignore_set, **options):
         output=output,
     )
 
+    process = Popen(('hg', 'out'), stdout=PIPE, cwd=path)
+    output = process.stdout.read()
+    lines = []
+    for line in output.splitlines():
+        if not line.strip():
+            continue
+        if line.startswith('comparing with'):
+            continue
+        if line.startswith('searching for changes'):
+            continue
+        if line.startswith('no changes found'):
+            continue
+        lines.append(line)
+    output='\n'.join(lines)+'\n'
+
+    touched = bool(lines)
+    if touched:
+        yield dict(
+            touched=touched,
+            path=path,
+            status='unpushed' if touched else 'OK',
+            output=output,
+        )
+
 def git(path, ignore_set, **options):
     """Get statuses of a Git repository."""
     ignore_untracked = options['ignore_untracked']
