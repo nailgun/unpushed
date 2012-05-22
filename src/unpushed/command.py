@@ -49,12 +49,10 @@ def main():
     repos = sorted(repos)
     for status in scanner.scan_repos(repos):
         if status['touched'] or options.print_all:
-            status_char = '* ' if status['touched'] else '  '
-            sys.stdout.write(status_char)
-            print status['path'], status['status'], '('+status['vcs']+')'
+            status_char = '*' if status['touched'] else ' '
+            print(status_char, status['path'], status['status'], '('+status['vcs']+')')
             if options.verbose:
-                sys.stdout.write(status['output'])
-                sys.stdout.write('\n')
+                print(status['output'])
 
 if __name__ == '__main__':
     main()

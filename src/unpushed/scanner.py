@@ -24,7 +24,7 @@ def find_repos_with_locate(path):
         patterns.append(r'%s\/%s' % (escape(path), escape(dotdir)))
         patterns.append(r'%s\/*/%s' % (escape(path), escape(dotdir)))
     process = Popen([ 'locate', '-0' ] + patterns, stdout=PIPE)
-    paths = process.stdout.read().strip('\0').split('\0')
+    paths = str(process.stdout.read()).strip('\0').split('\0')
     return [ (os.path.dirname(p), DOTDIRS[os.path.basename(p)]) for p in paths
              if not os.path.islink(p) and os.path.isdir(p) ]
 

@@ -25,7 +25,6 @@ def notify_linux(report):
     for entry in w:
         display = entry.split(None, 8)[2]
         displays.add(display)
-    print displays
     filtered = set()
     for display in displays:
         m = re.match(r'^(:\d+)\.\d+$', display)
@@ -35,7 +34,6 @@ def notify_linux(report):
                 filtered.add(display)
         else:
             filtered.add(display)
-    print filtered
     for display in filtered:
         os.environ['DISPLAY'] = display
         pynotify.init('unpushed-notify')
