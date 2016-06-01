@@ -72,7 +72,7 @@ notification run this command::
 
     $ unpushed-notify ~
 
-On Linux this is done through pynotify library. On other systems this feature is
+On Linux this is done through pynotify library. On OS X through pyobjc. On other systems this feature is
 not implemented yet.
 
 You can add this line to your crontab (*crontab -e*)::
