@@ -14,12 +14,34 @@ USAGE = '''usage: %prog [options] path [path...]
 def here(*args):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
 
-def notify_linux(report):
+def notify_osx(reports):
+    from AppKit import NSImage
+    from Foundation import NSUserNotification
+    from Foundation import NSUserNotificationCenter
+    from Foundation import NSUserNotificationDefaultSoundName
+    for report in reports:
+        notification = NSUserNotification.alloc().init()
+        notification.setTitle_("%s %s changes" % (report['status'].title(), report['vcs'].lower()))
+        notification.setInformativeText_(report['path'])
+        image = NSImage.alloc().initByReferencingFile_(here('logo.png'))
+        # See http://stackoverflow.com/questions/24923979/nsusernotification-customisable-app-icon
+        # Unfortunately I can't seem to get it to work with PyObjC
+        # notification.setValue_forKey_(image, "_identityImage")
+        notification.setIdentifier_(report['path'])
+        notification.setSoundName_(NSUserNotificationDefaultSoundName)
+        center = NSUserNotificationCenter.defaultUserNotificationCenter()
+        center.deliverNotification_(notification)
+
+def notify_linux(reports):
     import os
     import re
     import getpass
     from subprocess import Popen, PIPE
     import pynotify
+
+    message = ''
+    for report in reports:
+        message += '%s %s (%s)\n' % (status['path'], status['status'], status['vcs'])
     w = Popen(('w', getpass.getuser()), stdout=PIPE).stdout.read().splitlines()[2:]
     displays = set()
     for entry in w:
@@ -38,7 +60,7 @@ def notify_linux(report):
         os.environ['DISPLAY'] = display
         pynotify.init('unpushed-notify')
         icon = 'file://'+here('logo.png')
-        n = pynotify.Notification('You have changes in working directory', report, icon)
+        n = pynotify.Notification('You have changes in working directory', message, icon)
         n.show()
 
 def main():
@@ -74,15 +96,17 @@ def main():
         repos.update(find_repos(path))
 
     repos = sorted(repos)
-    report = ''
+    reports = []
     for status in scanner.scan_repos(repos, ignore_untracked=options.ignore_untracked):
         if status['touched']:
-            report += '%s %s (%s)\n' % (status['path'], status['status'], status['vcs'])
-    if report:
+            reports.append(status)
+    if len(reports) > 0:
         if sys.platform.startswith('linux'):
-            notify_linux(report)
+            notify_linux(reports)
+        elif sys.platform.startswith('darwin'):
+            notify_osx(reports)
         else:
-            raise NotImplementedError('Notification is not implemented for this system')
+            raise NotImplementedError('Notifications not implemented for %s' % (sys.platform))
 
 if __name__ == '__main__':
     main()
