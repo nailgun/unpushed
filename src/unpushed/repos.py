@@ -13,7 +13,7 @@ def mercurial(path, ignore_set, **options):
     process = Popen(('hg', 'st'), stdout=PIPE, cwd=path)
     output = process.stdout.read()
     lines = output.splitlines()
-    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_count = ilen((line for line in lines if line.startswith(b'?')))
     untracked_only = untracked_count == len(lines)
 
     touched = bool(lines)
@@ -40,11 +40,11 @@ def mercurial(path, ignore_set, **options):
     for line in output.splitlines():
         if not line.strip():
             continue
-        if line.startswith('comparing with'):
+        if line.startswith(b'comparing with'):
             continue
-        if line.startswith('searching for changes'):
+        if line.startswith(b'searching for changes'):
             continue
-        if line.startswith('no changes found'):
+        if line.startswith(b'no changes found'):
             continue
         lines.append(line)
     output = '\n'.join(lines)+'\n'
@@ -66,7 +66,7 @@ def git(path, ignore_set, **options):
     process = Popen(('git', 'status', '--porcelain'), stdout=PIPE, cwd=path)
     output = process.stdout.read()
     lines = output.splitlines()
-    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_count = ilen((line for line in lines if line.startswith(b'?')))
     untracked_only = untracked_count == len(lines)
 
     touched = bool(lines)
@@ -117,7 +117,7 @@ def subversion(path, ignore_set, **options):
     for line in output.splitlines():
         if not line.strip():
             continue
-        if line.startswith('Performing'):
+        if line.startswith(b'Performing'):
             continue
         status = line[:8]
         filename = line[8:].split(None, 3)[-1]
@@ -126,7 +126,7 @@ def subversion(path, ignore_set, **options):
             lines.append(status + filename)
     output = '\n'.join(lines)+'\n'
 
-    untracked_count = ilen((line for line in lines if line.startswith('?')))
+    untracked_count = ilen((line for line in lines if line.startswith(b'?')))
     untracked_only = untracked_count == len(lines)
 
     touched = bool(lines)
