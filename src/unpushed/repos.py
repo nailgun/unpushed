@@ -1,8 +1,10 @@
 import os
 from subprocess import Popen, PIPE
 
+
 def ilen(it):
     return sum(1 for i in it)
+
 
 def mercurial(path, ignore_set, **options):
     """Get statuses of a Mercurial repository."""
@@ -45,7 +47,7 @@ def mercurial(path, ignore_set, **options):
         if line.startswith('no changes found'):
             continue
         lines.append(line)
-    output='\n'.join(lines)+'\n'
+    output = '\n'.join(lines)+'\n'
 
     touched = bool(lines)
     if touched:
@@ -55,6 +57,7 @@ def mercurial(path, ignore_set, **options):
             status='unpushed' if touched else 'OK',
             output=output,
         )
+
 
 def git(path, ignore_set, **options):
     """Get statuses of a Git repository."""
@@ -92,8 +95,8 @@ def git(path, ignore_set, **options):
     branches = [br[2:] for br in process.stdout.read().splitlines()]
     for branch in branches:
         process = Popen(('git', 'log', branch, '--not', '--remotes',
-            '--simplify-by-decoration',
-            '--decorate', '--oneline', '--'), stdout=PIPE, cwd=path)
+                         '--simplify-by-decoration',
+                         '--decorate', '--oneline', '--'), stdout=PIPE, cwd=path)
         output = process.stdout.read()
         touched = bool(output)
         yield dict(
@@ -102,6 +105,7 @@ def git(path, ignore_set, **options):
             status='unpushed' if touched else 'OK',
             output=output,
         )
+
 
 def subversion(path, ignore_set, **options):
     """Get statuses of a Subversion repository."""
@@ -120,7 +124,7 @@ def subversion(path, ignore_set, **options):
         ignore_set.add(os.path.join(path, filename))
         if status.strip():
             lines.append(status + filename)
-    output='\n'.join(lines)+'\n'
+    output = '\n'.join(lines)+'\n'
 
     untracked_count = ilen((line for line in lines if line.startswith('?')))
     untracked_only = untracked_count == len(lines)

@@ -11,8 +11,10 @@ USAGE = '''usage: %prog [options] path [path...]
   Checks the status of all Version Control repositories beneath the paths
   given on the command line.  Notify on OSD if some of them has changes.'''
 
+
 def here(*args):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *args)
+
 
 def notify_osx(reports):
     from AppKit import NSImage
@@ -31,6 +33,7 @@ def notify_osx(reports):
         notification.setSoundName_(NSUserNotificationDefaultSoundName)
         center = NSUserNotificationCenter.defaultUserNotificationCenter()
         center.deliverNotification_(notification)
+
 
 def notify_linux(reports):
     import os
@@ -62,6 +65,7 @@ def notify_linux(reports):
         icon = 'file://'+here('logo.png')
         n = pynotify.Notification('You have changes in working directory', message, icon)
         n.show()
+
 
 def main():
     parser = OptionParser(usage=USAGE)
@@ -107,6 +111,7 @@ def main():
             notify_osx(reports)
         else:
             raise NotImplementedError('Notifications not implemented for %s' % (sys.platform))
+
 
 if __name__ == '__main__':
     main()
