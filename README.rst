@@ -98,8 +98,18 @@ Limitations
 
 * Only Linux libnotify is supported as notification facility
 
+TODO
+====
+
+* Check svn existence before using it
+* Check locate existence before using it
+
 Changelog
 =========
+
+**1.2.0** (2017 Sep 25)
+
+- Python 3 Migration
 
 **1.1.0** (2012 May 22)
 
