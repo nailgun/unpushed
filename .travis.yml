@@ -1,4 +1,5 @@
 language: python
+install: true
 deploy:
   provider: pypi
   user: $PYPI_USER
