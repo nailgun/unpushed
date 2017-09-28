@@ -93,11 +93,6 @@ At the moment, "unpushed" supports:
 * `Git`_ (.git directories)
 * `Subversion`_ (.svn directories)
 
-Limitations
-===========
-
-* Only Linux libnotify is supported as notification facility
-
 TODO
 ====
 
