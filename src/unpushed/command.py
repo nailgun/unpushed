@@ -12,6 +12,7 @@ USAGE = '''usage: %prog [options] path [path...]
   given on the command line.  Any repositories with uncommitted changes
   are printed to standard out, along with the status of the files inside.'''
 
+
 def main():
     parser = OptionParser(usage=USAGE)
     parser.add_option('-l', '--locate', dest='use_locate', action='store_true',
@@ -52,9 +53,10 @@ def main():
     for status in scanner.scan_repos(repos, ignore_untracked=options.ignore_untracked):
         if status['touched'] or options.print_all:
             status_char = '*' if status['touched'] else ' '
-            print status_char, status['path'], status['status'], '('+status['vcs']+')'
+            print(status_char, status['path'], status['status'], '('+status['vcs']+')')
             if options.verbose:
-                print status['output']
+                print(status['output'])
+
 
 if __name__ == '__main__':
     main()

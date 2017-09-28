@@ -4,14 +4,18 @@ from subprocess import Popen, PIPE
 
 from . import repos
 
+
 class ErrorCannotLocate(Exception):
     """Signal that we cannot successfully run the locate(1) binary."""
 
+
 globchar = re.compile(r'([][*?])')
+
 
 def escape(s):
     """Escape the characters special to locate(1) globbing."""
     return globchar.sub(r'\\\1', s)
+
 
 def find_repos_with_locate(path):
     """Use locate to return a sequence of (path, vcsname) pairs."""
@@ -23,10 +27,11 @@ def find_repos_with_locate(path):
         # '.hgignore' files do not show up in the result.
         patterns.append(r'%s\/%s' % (escape(path), escape(dotdir)))
         patterns.append(r'%s\/*/%s' % (escape(path), escape(dotdir)))
-    process = Popen([ 'locate', '-0' ] + patterns, stdout=PIPE)
+    process = Popen(['locate', '-0'] + patterns, stdout=PIPE)
     paths = str(process.stdout.read()).strip('\0').split('\0')
-    return [ (os.path.dirname(p), DOTDIRS[os.path.basename(p)]) for p in paths
-             if not os.path.islink(p) and os.path.isdir(p) ]
+    return [(os.path.dirname(p), DOTDIRS[os.path.basename(p)]) for p in paths
+            if not os.path.islink(p) and os.path.isdir(p)]
+
 
 def find_repos_by_walking(path):
     """Walk a tree and return a sequence of (path, vcsname) pairs."""
@@ -50,6 +55,7 @@ STATUS_FUNCTIONS = {
     'Git': repos.git,
     'Subversion': repos.subversion,
 }
+
 
 def scan_repos(repos, **options):
     """Given a repository list [(path, vcsname), ...], scan each of them."""
