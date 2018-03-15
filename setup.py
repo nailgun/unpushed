@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='unpushed',
-    version='1.2.0',
+    version='1.3.0',
     description=u'Scan version control for uncommitted and unpushed changes',
     long_description=read('README.rst'),
     author='Dmitry Bashkatov',
